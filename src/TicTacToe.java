@@ -10,6 +10,7 @@
  * @version: Jan 2023
  */
 
+import java.awt.*;
 import java.util.Scanner;
 
 public class TicTacToe
@@ -35,6 +36,8 @@ public class TicTacToe
     private Square[][] board;
     private boolean isGameOver;
 
+    private TicTacToeViewer window;
+
     /**
      * Constructor which initialized the board with BLANKs.
      * The winner is also initialized to BLANK.
@@ -46,9 +49,11 @@ public class TicTacToe
         this.board = new Square[3][3];
         for(int row = 0; row < this.board.length; row++) {
             for(int col = 0; col< this.board[row].length; col++) {
-                this.board[row][col] = new Square(row, col);
+                this.board[row][col] = new Square(row, col, window);
             }
         }
+
+        window = new TicTacToeViewer(board);
 
         // Initialize winning stats variables
         this.isGameOver = false;
@@ -110,18 +115,21 @@ public class TicTacToe
         // Loop until there is a winner or no more turns
         while(!this.checkWin() && this.checkTurn()) {
             this.printBoard();
+            window.repaint();
             System.out.println("Enter your Row Pick:" );
             int row = input.nextInt();
             System.out.println("Enter your Col Pick:" );
             int col = input.nextInt();
             if(this.pickLocation(row, col)) {
                 this.takeTurn(row, col);
+                window.repaint();
             } else {
                 System.out.println("That space is taken, or you entered an invalid row/col");
             }
         }
 
         this.printBoard();
+        window.repaint();
         this.isGameOver = true;
 
         // Determine if there was a winner
@@ -132,9 +140,11 @@ public class TicTacToe
             if (this.turn%2 == 0) {
                 this.winner = O_MARKER;
                 System.out.println("O Wins!");
+                window.repaint();
             } else {
                 this.winner = X_MARKER;
                 System.out.println("X Wins!");
+                window.repaint();
             }
         }
     }
