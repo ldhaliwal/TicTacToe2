@@ -49,7 +49,7 @@ public class TicTacToe
         this.board = new Square[3][3];
         for(int row = 0; row < this.board.length; row++) {
             for(int col = 0; col< this.board[row].length; col++) {
-                this.board[row][col] = new Square(row, col, window);
+                this.board[row][col] = new Square(row, col, window, this);
             }
         }
 
@@ -135,7 +135,8 @@ public class TicTacToe
         // Determine if there was a winner
         if(!this.checkWin()) {
             System.out.println("Game ends in a tie!");
-        } else {
+        }
+        else {
             this.markWinningSquares();
             if (this.turn%2 == 0) {
                 this.winner = O_MARKER;

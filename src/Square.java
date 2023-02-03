@@ -1,4 +1,5 @@
 import java.awt.*;
+import javax.swing.*;
 
 /**
  * A class written to support the TicTacToe Game.
@@ -21,10 +22,18 @@ public class Square {
     private final int WINDOW_WIDTH = 800;
     private final int WINDOW_HEIGHT = 800;
 
+    private final int WIN_MESSAGE_Y = 750;
     private final int INCREMENT_WIDTH = WINDOW_HEIGHT / 5;
     private boolean isWinningSquare;
 
+    private boolean tie;
+
+    private Image xImage;
+    private Image oImage;
+
     private TicTacToeViewer window;
+
+    private TicTacToe game;
 
     /**
      * Constructor to initialize one Square of the
@@ -32,10 +41,11 @@ public class Square {
      * @param row the row the square is in
      * @param col the column the square is in
      */
-    public Square(int row, int col, TicTacToeViewer window) {
+    public Square(int row, int col, TicTacToeViewer window, TicTacToe game) {
         this.row = row;
         this.col = col;
 
+        this.game = game;
         this.window = window;
 
         this.marker = TicTacToe.BLANK;
@@ -65,22 +75,11 @@ public class Square {
     }
 
     public void draw(Graphics g) {
+        int x = INCREMENT_WIDTH * (col + 1);
+        int y = INCREMENT_WIDTH * (row + 1);
 
-        //TODO: display winner message
-        int x = INCREMENT_WIDTH * (row + 1);
-        int y = INCREMENT_WIDTH * (col + 1);
-
-        //TODO: draw numbers
+        //draw numbers
         drawAxes(g);
-
-        if(marker.equals("X")){
-            Image i = window.getXImage();
-            g.drawImage(i, x, y, window);
-        }
-        else if (marker.equals("O")) {
-            Image i = window.getOImage();
-            g.drawImage(i, x, y, window);
-        }
 
         g.setColor(Color.BLACK);
         g.drawRect(x, y, INCREMENT_WIDTH, INCREMENT_WIDTH);
@@ -88,10 +87,38 @@ public class Square {
         if(this.isWinningSquare){
             g.setColor(Color.green);
             g.fillRect(x, y, INCREMENT_WIDTH, INCREMENT_WIDTH);
+
+            g.setColor(Color.RED);
+            g.setFont(new Font("Serif", Font.BOLD, 50));
+            if(marker.equals(TicTacToe.X_MARKER)){
+                g.drawString("X Wins!", WINDOW_HEIGHT/2, WIN_MESSAGE_Y);
+            }
+            else if (marker.equals(TicTacToe.O_MARKER)) {
+                g.drawString("O Wins!", WINDOW_HEIGHT/2, WIN_MESSAGE_Y);
+            }
+        }
+
+        if(game.checkTie()){
+            g.setColor(Color.RED);
+            g.setFont(new Font("Serif", Font.BOLD, 50));
+
+            g.drawString("Game ends in a tie!", INCREMENT_WIDTH, WIN_MESSAGE_Y);
+        }
+
+        if(marker.equals(TicTacToe.X_MARKER)){
+            xImage = new ImageIcon("Resources/X.png").getImage();
+            g.drawImage(xImage, x, y, INCREMENT_WIDTH, INCREMENT_WIDTH, window);
+        }
+        else if (marker.equals(TicTacToe.O_MARKER)) {
+            oImage = new ImageIcon("Resources/O.png").getImage();
+            g.drawImage(oImage, x, y, INCREMENT_WIDTH, INCREMENT_WIDTH, window);
         }
     }
 
     public void drawAxes(Graphics g) {
+        g.setColor(Color.RED);
+        g.setFont(new Font("Serif", Font.BOLD, 10));
+
         for (int i = 0; i < 3; i++) {
             String number = i + "";
             g.drawString(number, (INCREMENT_WIDTH / 2) + (INCREMENT_WIDTH * (i + 1)), INCREMENT_WIDTH/2);
