@@ -81,43 +81,51 @@ public class Square {
         //draw numbers
         drawAxes(g);
 
+        //draws the board
         g.setColor(Color.BLACK);
         g.drawRect(x, y, INCREMENT_WIDTH, INCREMENT_WIDTH);
 
+        //checks if the currents square is a winning sqaure
         if(this.isWinningSquare){
             g.setColor(Color.green);
             g.fillRect(x, y, INCREMENT_WIDTH, INCREMENT_WIDTH);
 
             g.setColor(Color.RED);
             g.setFont(new Font("Serif", Font.BOLD, 50));
+            //prints winning message for x
             if(marker.equals(TicTacToe.X_MARKER)){
-                g.drawString("X Wins!", WINDOW_HEIGHT/2, WIN_MESSAGE_Y);
+                g.drawString("X Wins!", 2*INCREMENT_WIDTH, WIN_MESSAGE_Y);
             }
+            //prints winning message for o
             else if (marker.equals(TicTacToe.O_MARKER)) {
-                g.drawString("O Wins!", WINDOW_HEIGHT/2, WIN_MESSAGE_Y);
+                g.drawString("O Wins!", 2*INCREMENT_WIDTH, WIN_MESSAGE_Y);
             }
         }
 
+        //checks if the game is a tie
         if(game.checkTie()){
             g.setColor(Color.RED);
             g.setFont(new Font("Serif", Font.BOLD, 50));
 
-            g.drawString("Game ends in a tie!", INCREMENT_WIDTH, WIN_MESSAGE_Y);
+            //prints out tie message
+            g.drawString("It's a tie!", 2*INCREMENT_WIDTH, WIN_MESSAGE_Y);
         }
-
+        //displays the x image in the window
         if(marker.equals(TicTacToe.X_MARKER)){
             xImage = new ImageIcon("Resources/X.png").getImage();
             g.drawImage(xImage, x, y, INCREMENT_WIDTH, INCREMENT_WIDTH, window);
         }
+        //displays the o image in the window
         else if (marker.equals(TicTacToe.O_MARKER)) {
             oImage = new ImageIcon("Resources/O.png").getImage();
             g.drawImage(oImage, x, y, INCREMENT_WIDTH, INCREMENT_WIDTH, window);
         }
     }
 
+    //draws the numbers along the axes
     public void drawAxes(Graphics g) {
         g.setColor(Color.RED);
-        g.setFont(new Font("Serif", Font.BOLD, 10));
+        g.setFont(new Font("Serif", Font.BOLD, 25));
 
         for (int i = 0; i < 3; i++) {
             String number = i + "";

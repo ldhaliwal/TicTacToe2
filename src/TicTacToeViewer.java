@@ -17,6 +17,7 @@ public class TicTacToeViewer extends JFrame{
         this.setVisible(true);
     }
 
+    //paints the window
     public void paint(Graphics g){
         for(Square[] s : board){
             for(Square each: s){
